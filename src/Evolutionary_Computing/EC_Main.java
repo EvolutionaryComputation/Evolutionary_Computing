@@ -32,7 +32,7 @@ public class EC_Main {
 		System.out.print("Enter second training data range: ");
 		data2 = input.nextInt();
 		
-		
+		/**/
 		
 		
 	}
