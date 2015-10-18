@@ -6,7 +6,7 @@ import java.util.Queue;
 public class BinaryTree {
 	private Node root;
 	
-	void BinaryTree()
+	BinaryTree()
 	{
 		root = null;
 	}
