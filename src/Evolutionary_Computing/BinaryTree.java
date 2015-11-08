@@ -2,6 +2,7 @@ package Evolutionary_Computing;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class BinaryTree {
 	private Node root;
@@ -9,6 +10,45 @@ public class BinaryTree {
 	BinaryTree()
 	{
 		root = null;
+	}
+	
+	private int Random_ctrld(int min, int max)
+	{
+		int range = max - min + 1;
+		return (int)(Math.random() * range) + min;
+	}
+	
+	public void Spawn()
+	{
+		while (this.Depth() <= GlobalVars.MaxHeight())
+		{
+			int s = Random_ctrld(0, 14);
+			
+			if (s >= 0 && s <= 9)
+			{
+				
+			}
+			else if (s == 10)
+			{
+				
+			}
+			else if (s == 11)
+			{
+				this.insert(new Node('+'));
+			}
+			else if (s == 12)
+			{
+				this.insert(new Node('-'));
+			}
+			else if (s == 13)
+			{
+				this.insert(new Node('*'));
+			}
+			else if (s == 14)
+			{
+				this.insert(new Node('/'));
+			}
+		}
 	}
 	
 	public boolean lookup(char data)
@@ -137,16 +177,64 @@ public class BinaryTree {
 		{
 			System.out.print(node.number + " ");
 		}
+		else if (node.type == NodeType.VAR)
+		{
+			System.out.print("x" + " ");
+		}
 		else if (node.type == NodeType.OPERATOR)
 		{
 			System.out.print(node.op + " ");
 		}
-		else
-		{
-			System.out.print(node.var + " ");
-		}
+		
 		printTree(node.right);
+		
 	}
+	
+	public void doMath()
+	{
+		Stack<Double> lifo = new Stack<Double>();
+		doMath(root, lifo);
+		System.out.println(lifo.pop());
+	}
+	
+	private void doMath(Node node, Stack<Double> st)
+	{
+		if (node == null)
+		{
+			return;	
+		}
+		
+		doMath(node.left, st);
+		doMath(node.right, st);
+		if (node.type == NodeType.NUMBER)
+		{
+			st.push(node.number);
+		}
+		else if (node.type == NodeType.VAR)
+		{
+			st.push(GlobalVars.Var());
+		}
+		else if (node.type == NodeType.OPERATOR)
+		{
+			
+			double s1 = (double)st.pop();
+			double s2 = (double)st.pop();
+			switch (node.op)
+			{
+				case '+': st.push(s2 + s1);
+					break;
+				case '-': st.push(s2 - s1);
+					break;
+				case '*': st.push(s2 * s1);
+					break;
+				case '/': st.push(s2 / s1);
+					break;
+			}
+			
+		}
+	}
+	
+	
 	
 	public int Depth()
 	{
@@ -192,3 +280,4 @@ public class BinaryTree {
 		}
 	}
 }
+

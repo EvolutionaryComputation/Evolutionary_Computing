@@ -8,6 +8,8 @@ public class GlobalVars {
 	// Max depth of trees to be spawned
 	private static int maxHeight = 3;
 	
+	private static double var = 2;
+	
 	// Array of Binary Trees (might change to list later)
 	private static BinaryTree[] trees;
 	
@@ -16,6 +18,11 @@ public class GlobalVars {
 	public static int MaxHeight()
 	{
 		return maxHeight;
+	}
+	
+	public static double Var()
+	{
+		return var;
 	}
 	
 }

@@ -15,12 +15,17 @@ public class Node {
 	public Node (double val)
 	{
 		type = NodeType.NUMBER;
-		number = val;
+		this.number = val;
 	}
 	
-	public Node (char oprtr )
+	public Node (char oprtr)
 	{
 		type = NodeType.OPERATOR;
 		this.op = oprtr;
+	}
+	
+	public Node ()
+	{
+		type = NodeType.VAR;
 	}
 }

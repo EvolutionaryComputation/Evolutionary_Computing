@@ -7,17 +7,21 @@ public class EC_Tree {
 	{
 		// JUST TEMPORARY STUFF BELOW
 		BinaryTree tree = new BinaryTree();
-		tree.insert(new Node(10));
-		tree.insert(new Node('+'));
-		tree.insert(new Node(12));
-		tree.insert(new Node(13));
-		tree.insert(new Node(14));
-		tree.insert(new Node(15));
-		tree.insert(new Node(16));
+		tree.insert(new Node('-'));
+		tree.insert(new Node('-'));
+		tree.insert(new Node('*'));
+		tree.insert(new Node(8));
+		tree.insert(new Node(2));
+		tree.insert(new Node(2));
+		tree.insert(new Node());
 		tree.printTree();
 		System.out.println("Depth: " + tree.Depth());
 		System.out.println("Size: " + tree.Size());
+		tree.doMath();
+		
 	}
+	
+	// Handle converting a string/formula into a tree
 	
 	// Mutate the tree
 	public static void MutateTree(BinaryTree tree)

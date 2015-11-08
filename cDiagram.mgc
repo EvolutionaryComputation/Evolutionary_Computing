@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <Class name="Evolutionary_Computing.EC_Main" x="362" y="187">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="true"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Communication destinationClassName="Evolutionary_Computing.EC_Tree"/>
+    </Class>
+    <Class name="Evolutionary_Computing.NodeType" x="362" y="406">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="Evolutionary_Computing.GlobalVars" x="171" y="34">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="false"
+            default-accepted="false" static-accepted="true"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="Evolutionary_Computing.BinaryTree"
+            endpointName="trees" kind="Simple"/>
+    </Class>
+    <Class name="Evolutionary_Computing.Node" x="171" y="371">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="true"/>
+        <Association destinationClassName="Evolutionary_Computing.Node"
+            endpointName="left" kind="Simple"/>
+        <Association destinationClassName="Evolutionary_Computing.Node"
+            endpointName="right" kind="Simple">
+            <Point x="270" y="398"/>
+        </Association>
+        <Association
+            destinationClassName="Evolutionary_Computing.NodeType"
+            endpointName="type" kind="Simple"/>
+    </Class>
+    <Class name="Evolutionary_Computing.EC_Tree" x="518" y="178">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="true"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Communication destinationClassName="Evolutionary_Computing.BinaryTree"/>
+    </Class>
+    <Class name="Evolutionary_Computing.BinaryTree" x="137" y="165">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="Evolutionary_Computing.Node"
+            endpointName="root" kind="Simple"/>
+    </Class>
+    <Class name="Evolutionary_Computing.EC_Evaluate" x="782" y="191">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="true"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+</ClassDiagram>
