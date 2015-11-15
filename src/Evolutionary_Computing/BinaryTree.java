@@ -4,280 +4,328 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 public class BinaryTree {
 	private Node root;
-	
-	BinaryTree()
-	{
+
+	BinaryTree() {
 		root = null;
 	}
-	
-	private int Random_ctrld(int min, int max)
-	{
+
+	private int Random_ctrld(int min, int max) {
 		int range = max - min + 1;
-		return (int)(Math.random() * range) + min;
+		return (int) (Math.random() * range) + min;
 	}
-	
-	public void Spawn()
-	{
-		while (this.Depth() <= GlobalVars.MaxHeight())
-		{
-			int s = Random_ctrld(0, 14);
-			
-			if (s >= 0 && s <= 9)
-			{
+
+	public int nodeDepth(Node nRoot, Node node, int depthLvl) {
+
+		if (nRoot == null) {
+			return -1;
+		}
+
+		if (nRoot != node) {
+			if (nRoot.left != null) {
+				// System.out.println("happened");
+				nodeDepth(nRoot.left, node, depthLvl + 1);
+			}
+			if (nRoot.right != null) {
+				nodeDepth(nRoot.right, node, depthLvl + 1);
+			}
+			return Math.max(nodeDepth(nRoot.left, node, depthLvl + 1), nodeDepth(nRoot.right, node, depthLvl + 1));
+		} else {
+			System.out.println("test: " + depthLvl);
+			return depthLvl;
+		}
+
+		/*
+		 * if (nRoot != null) { if (nRoot != node) { if (nRoot.left != null) {
+		 * //System.out.println("happened"); nodeDepth(nRoot.left, node,
+		 * depthLvl + 1); } if (nRoot.right != null) { nodeDepth(nRoot.right,
+		 * node, depthLvl + 1); } return -1; } else { System.out.println(
+		 * "test: " + depthLvl); return depthLvl; } } else { return -1; }
+		 */
+		// return -1;
+	}
+
+	public void Spawn() {
+		root = Spawn(root, 0);
+
+	}
+
+	private Node Spawn(Node node, int curDepth) {
+		//System.out.println(curDepth);
+		// Node tmpNode;
+		// while (this.Depth() <= GlobalVars.MaxHeight())
+		// {
+		int s = -1;
+		if (node == null) {
+			s = Random_ctrld(11, 14);
 				
+			if (s == 11) {
+				node = new Node('+');
+			} else if (s == 12) {
+				node = new Node('-');
+			} else if (s == 13) {
+				node = new Node('*');
+			} else if (s == 14) {
+				node = new Node('/');
 			}
-			else if (s == 10)
-			{
-				
-			}
-			else if (s == 11)
-			{
-				this.insert(new Node('+'));
-			}
-			else if (s == 12)
-			{
-				this.insert(new Node('-'));
-			}
-			else if (s == 13)
-			{
-				this.insert(new Node('*'));
-			}
-			else if (s == 14)
-			{
-				this.insert(new Node('/'));
+			//s = 11;
+			//node = new Node('-');
+
+		} else if (curDepth < (GlobalVars.MaxHeight() - 2)) {
+			// System.out.println(nodeDepth(root, node, 0));
+			s = Random_ctrld(0, 14);
+		} else {
+			s = Random_ctrld(0, 10);
+		}
+
+		if (node.left == null) {
+			if (s >= 0 && s <= 9) {
+				// Insert number
+				node.left = new Node(s);
+				// Stop
+			} else if (s == 10) {
+				// Insert Variable
+				node.left = new Node();
+				// Stop
+			} else if (s == 11) {
+				// Insert + node
+				// tmpNode = new Node('+');
+				// this.insert(tmpNode);
+				node.left = new Node('+');
+				curDepth += 1;
+				Spawn(node.left, curDepth);
+				// node.left = Spawn(node);
+				// node.right = Spawn(node);
+			} else if (s == 12) {
+				// Insert / node
+				// this.insert(new Node('-'));
+				node.left = new Node('-');
+				curDepth += 1;
+				Spawn(node.left, curDepth);
+			} else if (s == 13) {
+				// Insert * node
+				// this.insert(new Node('*'));
+				node.left = new Node('*');
+				curDepth += 1;
+				Spawn(node.left, curDepth);
+			} else if (s == 14) {
+				// Insert / node
+				// this.insert(new Node('/'));
+				node.left = new Node('/');
+				curDepth += 1;
+				Spawn(node.left, curDepth);
 			}
 		}
+
+		if (curDepth < (GlobalVars.MaxHeight() - 2)) {
+			s = Random_ctrld(0, 14);
+		} else {
+			s = Random_ctrld(0, 10);
+		}
+
+		if (node.right == null) {
+			if (s >= 0 && s <= 9) {
+				node.right = new Node(s);
+			} else if (s == 10) {
+				node.right = new Node();
+			} else if (s == 11) {
+				node.right = new Node('+');
+				curDepth += 1;
+				Spawn(node.right, curDepth);
+			} else if (s == 12) {
+				node.right = new Node('-');
+				curDepth += 1;
+				Spawn(node.right, curDepth);
+			} else if (s == 13) {
+				node.right = new Node('*');
+				curDepth += 1;
+				Spawn(node.right, curDepth);
+			} else if (s == 14) {
+				node.right = new Node('/');
+				curDepth += 1;
+				Spawn(node.right, curDepth);
+			}
+		}
+
+		// What I want to do:
+		// Recursive?
+		// Start at top, spawn an operator node
+		// Spawn a node to the left, if it's an operator, spawn left and right
+		// If it's an operand, don't spawn left or right
+		// }
+		return node;
 	}
-	
-	public boolean lookup(char data)
-	{
+
+	public boolean lookup(char data) {
 		return lookup(root, data);
 	}
-	
-	private boolean lookup(Node node, char data)
-	{
-		if (node == null)
-		{
+
+	private boolean lookup(Node node, char data) {
+		if (node == null) {
 			return false;
 		}
 
 		double sData = Double.parseDouble(Character.toString(data));
-		
-		if (sData == node.number || data == node.op)
-		{
+
+		if (sData == node.number || data == node.op) {
 			return true;
-		}
-		else
-		{
-			if (node.left != null)
-			{
+		} else {
+			if (node.left != null) {
 				lookup(node.left, data);
 			}
-			if (node.right != null)
-			{
+			if (node.right != null) {
 				lookup(node.right, data);
 			}
 		}
 		return false;
 	}
-	
-	/*public void insert (double data)
-	{
-		root = insert(root, data);
-	}
-	
-	private Node insert(Node node, double data)
-	{
-		if (node == null)
-		{
-			node = new Node(data);
-		}
-		else
-		{
-			if (node.left == null)
-			{
-				node.left = insert(node.left, data);
-			}
-			else
-			{
-				node.right = insert(node.right, data);
-			}
-		}
-		
-		return node;
-	}*/
-	
+
 	// Breadth First Search queue algorithm
-	// Always inserts the item into the first available left-most spot 
-	// Source: http://stackoverflow.com/questions/16630823/binary-tree-insert-algorithm
+	// Always inserts the item into the first available left-most spot
+	// Source:
+	// http://stackoverflow.com/questions/16630823/binary-tree-insert-algorithm
 	public void insert(Node node) {
-	    if(root == null) {
-	        root = node;
-	        return;
-	    }
+		if (root == null) {
+			root = node;
+			return;
+		}
 
-	    /* insert using Breadth-first-search (queue to the rescue!) */
-	    Queue<Node> queue = new LinkedList<Node>();
-	    queue.offer(root);
+		/* insert using Breadth-first-search (queue to the rescue!) */
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.offer(root);
 
-	    while(true) {
-	        Node n = queue.remove();
-	        if(!n.visited)
-	        {
-	        	if (n.type == NodeType.NUMBER)
-	        	{
-	        		System.out.println(n.number);
-	        	}
-	        	else if (n.type == NodeType.OPERATOR)
-	        	{
-	        		System.out.println(n.op);
-	        	}
-	        	else
-	        	{
-	        		// REPLACE WITH VAR
-	        		System.out.println(n.var);
-	        	}
-	        }
-	        n.visited = true;
+		while (true) {
+			Node n = queue.remove();
+			if (!n.visited) {
+				if (n.type == NodeType.NUMBER) {
+					//System.out.println(n.number);
+				} else if (n.type == NodeType.OPERATOR) {
+					//System.out.println(n.op);
+				} else {
+					// REPLACE WITH VAR
+					//System.out.println(GlobalVars.Var());
+				}
+			}
+			n.visited = true;
 
-	        if(n.left == null) {
-	            n.left = node;
-	            break;
-	        } else {
-	            queue.offer(n.left);
-	        }           
+			if (n.left == null) {
+				n.left = node;
+				break;
+			} else {
+				queue.offer(n.left);
+			}
 
-	        if(n.right == null) {
-	            n.right = node;
-	            break;
-	        } else {
-	            queue.offer(n.right);
-	        }
-	    }
+			if (n.right == null) {
+				n.right = node;
+				break;
+			} else {
+				queue.offer(n.right);
+			}
+		}
 	}
-	
-	public void printTree()
-	{
+
+	public void printTree() {
 		printTree(root);
 		System.out.println();
 	}
-	
+
 	// Recursive print out of tree
-	private void printTree(Node node)
-	{
-		if (node == null)
-		{
-			return;	
+	private void printTree(Node node) {
+		if (node == null) {
+			return;
 		}
-		
+
 		printTree(node.left);
-		if (node.type == NodeType.NUMBER)
-		{
+		if (node.type == NodeType.NUMBER) {
 			System.out.print(node.number + " ");
-		}
-		else if (node.type == NodeType.VAR)
-		{
+		} else if (node.type == NodeType.VAR) {
 			System.out.print("x" + " ");
-		}
-		else if (node.type == NodeType.OPERATOR)
-		{
+		} else if (node.type == NodeType.OPERATOR) {
 			System.out.print(node.op + " ");
 		}
-		
+
 		printTree(node.right);
-		
+
 	}
-	
-	public void doMath()
-	{
+
+	public double doMath(double var) {
 		Stack<Double> lifo = new Stack<Double>();
-		doMath(root, lifo);
-		System.out.println(lifo.pop());
+		doMath(root, lifo, var);
+		//System.out.println(lifo.pop());
+		return lifo.pop();
 	}
-	
-	private void doMath(Node node, Stack<Double> st)
-	{
-		if (node == null)
-		{
-			return;	
+
+	private void doMath(Node node, Stack<Double> st, double var) {
+		if (node == null) {
+			return;
 		}
-		
-		doMath(node.left, st);
-		doMath(node.right, st);
-		if (node.type == NodeType.NUMBER)
-		{
+
+		doMath(node.left, st, var);
+		doMath(node.right, st, var);
+		if (node.type == NodeType.NUMBER) {
 			st.push(node.number);
-		}
-		else if (node.type == NodeType.VAR)
-		{
-			st.push(GlobalVars.Var());
-		}
-		else if (node.type == NodeType.OPERATOR)
-		{
-			
-			double s1 = (double)st.pop();
-			double s2 = (double)st.pop();
-			switch (node.op)
-			{
-				case '+': st.push(s2 + s1);
-					break;
-				case '-': st.push(s2 - s1);
-					break;
-				case '*': st.push(s2 * s1);
-					break;
-				case '/': st.push(s2 / s1);
-					break;
+		} else if (node.type == NodeType.VAR) {
+			st.push(var);
+		} else if (node.type == NodeType.OPERATOR) {
+
+			double s1 = (double) st.pop();
+			double s2 = (double) st.pop();
+			switch (node.op) {
+			case '+':
+				st.push(s2 + s1);
+				break;
+			case '-':
+				st.push(s2 - s1);
+				break;
+			case '*':
+				st.push(s2 * s1);
+				break;
+			case '/':
+				if (!Double.isInfinite(s2 / s1))
+				{
+					st.push(s2 / s1);
+				}
+				else
+				{
+					st.push(1.0);
+				}
+				break;
 			}
-			
+
 		}
 	}
-	
-	
-	
-	public int Depth()
-	{
+
+	public int Depth() {
 		return Depth(root);
 	}
-	
-	private int Depth(Node node)
-	{
-		if (node == null)
-		{
+
+	private int Depth(Node node) {
+		if (node == null) {
 			return 0;
-		}
-		else
-		{
+		} else {
 			int depth_L = Depth(node.left);
 			int depth_R = Depth(node.right);
-			
-			if (depth_L > depth_R)
-			{
+
+			if (depth_L > depth_R) {
 				return depth_L + 1;
-			}
-			else
-			{
+			} else {
 				return depth_R + 1;
 			}
 		}
 	}
-	
-	public int Size()
-	{
+
+	public int Size() {
 		return Size(root);
 	}
-	
-	private int Size(Node node)
-	{
-		if (node == null)
-		{
+
+	private int Size(Node node) {
+		if (node == null) {
 			return 0;
-		}
-		else
-		{
+		} else {
 			return (Size(node.left) + 1 + Size(node.right));
 		}
 	}
 }
-

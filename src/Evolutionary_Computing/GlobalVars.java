@@ -6,12 +6,12 @@ public class GlobalVars {
 	// Variables
 	
 	// Max depth of trees to be spawned
-	private static int maxHeight = 3;
+	private static int maxHeight = 5;
 	
-	private static double var = 2;
+	public static double[] trainingData = {2.0, 3.0, 4.0, 5.0};
 	
 	// Array of Binary Trees (might change to list later)
-	private static BinaryTree[] trees;
+	public static BinaryTree[] trees;
 	
 	
 	// Fields
@@ -20,9 +20,6 @@ public class GlobalVars {
 		return maxHeight;
 	}
 	
-	public static double Var()
-	{
-		return var;
-	}
+	
 	
 }
