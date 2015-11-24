@@ -8,7 +8,7 @@ public class EC_Tree {
 	
 	public static void SpawnTrees()
 	{
-		GlobalVars.trees = new BinaryTree[14];
+		GlobalVars.trees = new BinaryTree[10];
 		//System.out.println(GlobalVars.trees.length);
 		for (int i = 0; i < GlobalVars.trees.length; i++)
 		{
@@ -20,15 +20,39 @@ public class EC_Tree {
 	
 	public static void FillEmptyTrees()
 	{
+		int timesRun = 0; 
+		
 		for (int i = 0; i < GlobalVars.trees.length; i++)
 		{
 			if (GlobalVars.trees[i] == null)
 			{
 				GlobalVars.trees[i] = new BinaryTree();
-				GlobalVars.trees[i].Spawn();
+				if (timesRun == 0)
+				{
+					GlobalVars.trees[i] = Crossover(GlobalVars.trees[0], GlobalVars.trees[1]);
+					GlobalVars.trees[i].printTree();
+				}
+				else if (timesRun == 1)
+				{
+					GlobalVars.trees[i] = Crossover(GlobalVars.trees[1], GlobalVars.trees[0]);
+					GlobalVars.trees[i].printTree();
+				}
+				else if (timesRun == 2)
+				{
+					// WHERE MUTATE SHOULD BE
+					//GlobalVars.trees[i] = Crossover(GlobalVars.trees[1], GlobalVars.trees[0]);
+				}
+				else
+				{
+					GlobalVars.trees[i].Spawn();
+					timesRun = -1;
+				}
+				timesRun++;
 			}
-			GlobalVars.trees[i].printTree();
+			//GlobalVars.trees[i].printTree();
 		}
+
+		//Crossover(GlobalVars.trees[0], GlobalVars.trees[1]);
 	}
 	
 	// Spawn a Binary Tree with the parameters we're looking for
@@ -52,10 +76,10 @@ public class EC_Tree {
 		System.out.println(tree.nodeDepth(tree.root, o, 0));*/
 		tree.Spawn();
 		//tree.SimpleSpawn();
-		tree.printTree();
-		System.out.println("Depth: " + tree.Depth());
-		System.out.println("Size: " + tree.Size());
-		tree.doMath(GlobalVars.trainingData[1]);
+		//tree.printTree();
+		//System.out.println("Depth: " + tree.Depth());
+		//System.out.println("Size: " + tree.Size());
+		//tree.doMath(GlobalVars.trainingData[1]);
 		
 	}
 	
@@ -78,18 +102,58 @@ public class EC_Tree {
 		return targetTree;
 	}
 	
-	// Handle converting a string/formula into a tree
-	
 	// Mutate the tree
-	public static void MutateTree(BinaryTree tree)
+	public static void MutateTree(BinaryTree t)
 	{
 		
 	}
 	
 	// Have two trees reproduce together
-	public static void Reproduce(BinaryTree tree_1, BinaryTree tree_2)
+	public static BinaryTree Crossover(BinaryTree t1, BinaryTree t2)
 	{
+		BinaryTree tmptree = new BinaryTree();
+		BinaryTree tmptree2 = new BinaryTree();
+		// Cutoff at left on t1
+		// Cutoff at right on t2
+		// Combine to make new tree
 		
+		//System.out.println(t1.root.left.op);
+		//System.out.println(t1.Depth());
+		
+		//t1.printTree();
+		//t2.printTree();
+		
+		tmptree = t1.copyTree();
+		tmptree2 = t2.copyTree();
+		
+		tmptree.root.left = null;
+		//tmptree.printTree();
+		
+		tmptree.root.left = tmptree2.copyTreeFromNode(tmptree2.root.left).root;
+		
+		//tmptree.printTree();
+		//tmptree2.printTree();
+		
+		//System.out.println();
+		
+		t1.printTree();
+		t2.printTree();
+		
+		//tmptree = t1.copyTreeFromNode(t1.root.left);
+		//tmptree.printTree();
+		//tmptree = t1.copyTreeFromNode(t1.root.right);
+		
+		//tmptree.root.right = null;
+		//t1.printTree();
+		
+		//tmptree.printTree();
+		
+		//System.out.print("Copied tree: " + t1.copyTree(t1.root).op);
+		//System.out.print("Copied tree: " + t1.copyTree(t1.root).right);
+		
+		//System.out.println("tmp dpth " + tmptree.Depth());
+		
+		return tmptree;
 	}
 	
 	public static void RemoveTrees()
@@ -105,7 +169,7 @@ public class EC_Tree {
 		Arrays.sort(sortedVals);
 		double indexLoc = sortedVals.length * 3 / 5;
 		deleteIndex = sortedVals[(int)indexLoc];
-		System.out.println(deleteIndex);
+		//System.out.println(deleteIndex);
 		
 		for (int i = 0; i < GlobalVars.trees.length; i++)
 		{

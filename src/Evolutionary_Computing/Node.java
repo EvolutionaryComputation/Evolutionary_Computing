@@ -11,6 +11,13 @@ public class Node {
 	Node left;
 	Node right;
 	
+	public void getData()
+	{
+		if (type == NodeType.NUMBER)
+		{
+			
+		}
+	}
 	
 	public Node (double val)
 	{

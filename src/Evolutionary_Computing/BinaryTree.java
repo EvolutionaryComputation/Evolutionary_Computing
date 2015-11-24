@@ -7,11 +7,26 @@ import java.util.Stack;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 public class BinaryTree {
-	private Node root;
+	public Node root;
 
-	BinaryTree() {
+	public BinaryTree() {
 		root = null;
 	}
+	
+	public BinaryTree(Node n)
+	{
+		root = n;
+	}
+	
+	/*public BinaryTree getLeft()
+	{
+		BinaryTree tmp = root.left;
+	}
+	
+	public BinaryTree getRight()
+	{
+		BinaryTree tmp = root.right;
+	}*/
 
 	private int Random_ctrld(int min, int max) {
 		int range = max - min + 1;
@@ -225,6 +240,54 @@ public class BinaryTree {
 				queue.offer(n.right);
 			}
 		}
+	}
+	
+	public BinaryTree copyTree()
+	{
+		
+		return new BinaryTree(copyTree(root));
+	}
+	
+	// Copy a tree from a specific node down
+	// Can copy part of a tree
+	public BinaryTree copyTreeFromNode(Node n)
+	{
+		
+		return new BinaryTree(copyTree(n));
+	}
+	
+	private Node copyTree(Node n)
+	{
+		/*if (root == null)
+		{
+			return new BinaryTree();
+		}*/
+		
+		Node tmpN = n;
+		
+		if (n.type == NodeType.OPERATOR)
+		{
+			tmpN = new Node(n.op);
+		}
+		else if (n.type == NodeType.NUMBER)
+		{
+			tmpN = new Node(n.number);
+		}
+		else if (n.type == NodeType.VAR)
+		{
+			tmpN = new Node();
+		}
+		
+		if (n.left != null)
+		{
+			tmpN.left = copyTree(n.left);
+		}
+		if (n.right != null)
+		{
+			tmpN.right = copyTree(n.right);
+		}
+		
+		return tmpN;
 	}
 
 	public void printTree() {
