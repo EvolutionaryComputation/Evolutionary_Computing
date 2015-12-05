@@ -1,23 +1,14 @@
 package Evolutionary_Computing;
 
-enum NodeType { NUMBER, OPERATOR, VAR }
+enum NodeType { NUMBER, OPERATOR, VAR, NONE }
 
 public class Node {
 	NodeType type;
-	double number;
-	char var;
+	double number = -1;
 	char op;
 	boolean visited = false;
 	Node left;
 	Node right;
-	
-	public void getData()
-	{
-		if (type == NodeType.NUMBER)
-		{
-			
-		}
-	}
 	
 	public Node (double val)
 	{
@@ -34,5 +25,6 @@ public class Node {
 	public Node ()
 	{
 		type = NodeType.VAR;
+		this.number = -1;
 	}
 }

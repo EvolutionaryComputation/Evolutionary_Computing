@@ -8,6 +8,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 public class BinaryTree {
 	public Node root;
+	public int gensLived = 0;
 
 	public BinaryTree() {
 		root = null;
@@ -31,6 +32,26 @@ public class BinaryTree {
 	private int Random_ctrld(int min, int max) {
 		int range = max - min + 1;
 		return (int) (Math.random() * range) + min;
+		
+	}
+	
+	private double[] Rand_Chance(double w, double x, double y, double z)
+	{
+		double total = w + x + y + z;
+		// Normalize values
+		
+		w /= total;
+		x /= total;
+		y /= total;
+		z /= total;
+		
+		System.out.println(y);
+		return new double[]{w, x, y, z};
+	}
+	
+	private double ChanceToSpawn()
+	{
+		return 0;
 	}
 
 	public int nodeDepth(Node nRoot, Node node, int depthLvl) {
@@ -65,7 +86,6 @@ public class BinaryTree {
 
 	public void Spawn() {
 		root = Spawn(root, 0);
-
 	}
 
 	private Node Spawn(Node node, int curDepth) {
@@ -174,28 +194,189 @@ public class BinaryTree {
 		return node;
 	}
 
-	public boolean lookup(char data) {
-		return lookup(root, data);
+	// HOW TO: 
+	// LOOKUP OPERATOR: getNode("*");
+	// LOOKUP OPERAND: getNode("2");
+	// LOOKUP VAR: getNode("x");
+	public Node getNode(String data) {
+		return getNode(root, data);
 	}
 
-	private boolean lookup(Node node, char data) {
+
+	private Node getNode(Node node, String data) {
 		if (node == null) {
+			return null;
+		}
+		
+		double sData = -1;
+		
+		
+		Node nLeft = new Node();
+		nLeft.type = NodeType.NONE;
+		Node nRight = new Node();
+		nRight.type = NodeType.NONE;
+		
+		try
+		{
+			sData = Double.parseDouble(data);
+		}
+		catch (NumberFormatException e)
+		{
+			sData = -1;
+		}
+		
+		//System.out.println(sData);
+		
+		
+		if (data.charAt(0) == node.op || 
+			(data == "x" && node.type == NodeType.VAR) || 
+			(sData == node.number && node.type == NodeType.NUMBER))
+		{
+			return node;
+		}
+		
+		nLeft = getNode(node.left, data);
+		nRight = getNode(node.right, data);
+		
+		/*if (data == "x" && node.type == NodeType.VAR)
+		{
+			System.out.println("hither");
+			return node;
+		}*/
+		/*else 
+		{
+			if (node.left != null) 
+			{
+				getNode(node.left, data);
+				
+				//System.out.println(node.left.type);
+			}
+			if (node.right != null) 
+			{
+				getNode(node.right, data);
+				//System.out.println(node.right.type);
+			}
+		}*/
+		
+		if (nLeft != null && 
+			(data.charAt(0) == nLeft.op || 
+			(data == "x" && nLeft.type == NodeType.VAR) || 
+			(sData == nLeft.number && nLeft.type == NodeType.NUMBER)))
+		{
+			return nLeft;
+		}
+		if (nRight != null  && 
+			(data.charAt(0) == nRight.op || 
+			(data == "x" && nRight.type == NodeType.VAR) || 
+			(sData == nRight.number && nRight.type == NodeType.NUMBER)))
+		{
+			return nRight;
+		}
+		
+		return null;
+	}
+	
+	public boolean Equals (BinaryTree t2)
+	{
+		return Equals (root, t2.root);
+	}
+	
+	private boolean Equals (Node t1, Node t2)
+	{
+		
+		if (t1 == null || t2 == null)
+		{
+			return true;
+		}
+		if (t1.type == t2.type)
+		{
+			if (t1.type == NodeType.OPERATOR)
+			{
+				if (t1.op == t2.op && 
+					Equals(t1.left, t2.left) &&
+					Equals(t1.right, t2.right))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if (t1.type == NodeType.NUMBER)
+			{
+				if (t1.number == t2.number && 
+					Equals(t1.left, t2.left) &&
+					Equals(t1.right, t2.right))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if (t1.type == NodeType.VAR)
+			{
+				if (Equals(t1.left, t2.left) &&
+					Equals(t1.right, t2.right))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
 			return false;
 		}
-
-		double sData = Double.parseDouble(Character.toString(data));
-
-		if (sData == node.number || data == node.op) {
-			return true;
-		} else {
-			if (node.left != null) {
-				lookup(node.left, data);
-			}
-			if (node.right != null) {
-				lookup(node.right, data);
+		/*if (t1 == null || t2 == null)
+		{
+			return false;
+		}
+		if (t1.type != t2.type)
+		{
+			return false;
+		}
+		
+		if (t1.type == NodeType.OPERATOR)
+		{
+			if (t1.op != t2.op)
+			{
+				return false;
 			}
 		}
-		return false;
+		else if (t1.type == NodeType.NUMBER)
+		{
+			if (t1.number != t2.number)
+			{
+				return false;
+			}
+		}
+		else if (t1.type == NodeType.VAR)
+		{
+			
+		}
+		else
+		{
+			if (t1.left != null)
+			{
+				Equals(t1.left, t2.left);
+			}
+			if (t1.right != null)
+			{
+				Equals(t1.right, t2.right);
+			}
+		}
+		
+		return false;*/
 	}
 
 	// Breadth First Search queue algorithm
@@ -258,9 +439,9 @@ public class BinaryTree {
 	
 	private Node copyTree(Node n)
 	{
-		/*if (root == null)
+		/*if (n == null)
 		{
-			return new BinaryTree();
+			return null;
 		}*/
 		
 		Node tmpN = n;
@@ -347,13 +528,13 @@ public class BinaryTree {
 				st.push(s2 * s1);
 				break;
 			case '/':
-				if (!Double.isInfinite(s2 / s1))
+				if (s1 != 0.0)
 				{
 					st.push(s2 / s1);
 				}
 				else
 				{
-					st.push(1.0);
+					st.push(1000.0);
 				}
 				break;
 			}
@@ -391,4 +572,6 @@ public class BinaryTree {
 			return (Size(node.left) + 1 + Size(node.right));
 		}
 	}
+	
+	
 }
